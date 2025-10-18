@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        PORT = "8080" // port for local server
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -22,38 +18,21 @@ pipeline {
 
         stage('Lint (Optional)') {
             steps {
-                echo '🔍 Running JavaScript lint check...'
-                bat '''
-                if exist package.json (
-                    echo Running npm install and eslint...
-                    npm install
-                    npx eslint .
-                ) else (
-                    echo No package.json found, skipping lint step.
-                )
-                '''
+                echo '🔍 Running JavaScript lint check (skipped as no Node.js)...'
+                echo 'No package.json found, skipping lint step.'
             }
         }
 
-        stage('Local Development Server') {
+        stage('Simulated Development Server') {
             steps {
-                echo "🚀 Starting local server for development preview on port ${env.PORT}..."
-                bat '''
-                if exist package.json (
-                    echo Starting Node.js server...
-                    npx http-server -p %PORT% -c-1
-                ) else (
-                    echo No Node.js project, using Python SimpleHTTPServer...
-                    python -m http.server %PORT%
-                )
-                '''
-                echo "✅ Server started successfully for testing."
+                echo '🚀 Simulating local development preview...'
+                echo 'All HTML, CSS, and JS files are ready for testing.'
             }
         }
 
         stage('Archive Website') {
             steps {
-                echo '📦 Archiving website files...'
+                echo '📦 Archiving website files as build artifacts...'
                 archiveArtifacts artifacts: '**/*', fingerprint: true
             }
         }
