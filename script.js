@@ -258,5 +258,5 @@ modeSwitcher.addEventListener("change", () => {
   // 👇 Ensure correct welcome shows when mode changes
   setTimeout(() => {
     showInitialBotMessage();
-  }, 300);
+  }, 300
 });
